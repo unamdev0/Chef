@@ -7,8 +7,10 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
 const db = process.env.MongoDB_URI;
+const passport = require('passport')
 
 var apiRouter = require("./routes/api");
+var userRouter = require('./routes/users')
 
 var app = express();
 
@@ -22,8 +24,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(passport.initialize())
+require('./config/passport')(passport)
 
+app.use('/user',userRouter)
 app.use("/", apiRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

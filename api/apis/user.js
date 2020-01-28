@@ -101,9 +101,45 @@ exports.validateRegistration = (req, res) => {
   });
 };
 
-exports.validateLogin=(req,res)=>{
-  const{errors,isValid}= validateLoginDetails(req.body);
-  if(!isValid){
-    return res.status(400).json(error)
+exports.validateLogin = (req, res) => {
+  const { errors, isValid } = validateLoginDetails(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
   }
-}
+
+  const emailorUsername = req.body.emailorUsername;
+  const password = req.body.password;
+
+  User.findOne({
+    $or: [{ email: emailorUsername }, { username: emailorUsername }]
+  }).then(user => {
+    if (!user) {
+      return res.status(404).json({ error: "Username/Email does not exists" });
+    }
+
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (!isMatch) {
+        return res.status(400).send("Wrong password");
+      } else {
+        const payload = {
+          id: user.id,
+          name: user.name
+        };
+
+        jwt.sign(
+          payload,
+          process.env.secretOrKey,
+          {
+            expiresIn: 31556926
+          },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: token
+            });
+          }
+        );
+      }
+    });
+  });
+};
