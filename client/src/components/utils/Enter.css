@@ -1,0 +1,13 @@
+input{
+    
+    border-radius: 5px;
+    border-bottom:1px solid #584141;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    text-align: center ;
+    font-size: medium;
+    font-family: Arial, Helvetica, sans-serif;
+    outline: none;
+    background-color: inherit;
+}
