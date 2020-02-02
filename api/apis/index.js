@@ -2,6 +2,7 @@ const axios = require("axios");
 
 exports.ingredients = async (req, res) => {
   var ing = req.body.ingredients;
+  console.log("From api side")
   axios({
     method: "GET",
     url: "https://api.spoonacular.com/recipes/findByIngredients",
@@ -17,6 +18,7 @@ exports.ingredients = async (req, res) => {
     }
   })
     .then(async response => {
+      console.log("Inside response")
       const recepies = await response.data.map(async recepie => {
         var k = await axios({
           method: "GET",
@@ -31,6 +33,7 @@ exports.ingredients = async (req, res) => {
             apiKey: process.env.API_KEY
           }
         }).then(async instructions => {
+          console.log("Inside instruction")
           recepie["instructions"] = await instructions.data.instructions;
           return recepie;
         });
