@@ -1,45 +1,32 @@
 import React, { Component } from "react";
-import "./receipe.css";
+import "./formPage.css";
 import Enter from "../utils/Enter";
 import Cus_Button from "../utils/Cus_Button";
 import axios from "axios";
 import { connect } from "react-redux";
 
-class Receipe extends Component {
-  state = {
-    ingredientsCount: 1,
-    ingredients: "",
-    tempIngredient: ""
-  };
-
-  incrementCounter = () => {
-    const ingredientsCount=this.props.incrementCount
-  };
-
+class FormPage extends Component {
   handleSubmit = event => {
     event.preventDefault();
-    const ingredients = this.state.ingredients;
-    console.log("here");
+    const ingredients = this.props.ingredients;
     axios.post("/ingredients", { ingredients }).then(res => {
       console.log("res", res);
       if (res.data) {
-        
+        this.props.onAddingReceipes(res.data);
       }
     });
   };
 
-  // handleChange = e => {
-  //   this.setState({
-      
-  //   });
-  // };
+  handleChange = e => {
+    this.props.TempData(e.target.value);
+  };
 
   renderEnter() {
-    if (this.state.ingredientsCount == 0) {
+    if (this.props.ingredientsCount == 0) {
       return <div></div>;
     } else {
       let enter = [];
-      for (let i = 0; i < this.state.ingredientsCount; i++) {
+      for (let i = 0; i < this.props.ingredientsCount; i++) {
         enter.push(
           <div>
             <Enter
@@ -68,7 +55,7 @@ class Receipe extends Component {
         {this.renderEnter()}
         <Cus_Button
           onclick={() => {
-            this.incrementCounter();
+            this.props.onAddingIngredient();
           }}
           title="Add more items"
         />
@@ -78,17 +65,24 @@ class Receipe extends Component {
 }
 
 const mapStateToProps = state => {
-  return { ingredients: state.ingredients, ingredientsCount: state.ingredientsCount,tempIngredient:state.tempIngredient };
+  return {
+    ingredients: state.ingredients,
+    ingredientsCount: state.ingredientsCount,
+    tempIngredient: state.tempIngredient
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onAddingIngredient: () =>
       dispatch({ type: "Add_Ingredients", payload: "" }),
-    onAddingUsername: tempData => {
+    TempData: tempData => {
       dispatch({ type: "Temp_Ingredients", payload: tempData });
+    },
+    onAddingReceipes: receipeData => {
+      dispatch({ type: "Receipe_data", payload: receipeData });
     }
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Receipe);
+export default connect(mapStateToProps, mapDispatchToProps)(FormPage);
