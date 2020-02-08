@@ -1,8 +1,25 @@
 import React from "react";
 import "./receipe.css";
+import { connect } from "react-redux";
+import Backdrop from "../../UI/Backdrop/Backdrop";
+import Modal from "../../UI/Modal/Modal";
 
 const Receipe = props => {
   const receipeData = props.receipeData;
+  let ingredients = () => {
+    return (
+      <div className="Ingredients">
+        Ingredients:
+        <ul>
+          {receipeData.usedIngredients.map(ingredient => {
+            return <li>{ingredient.originalString}</li>;
+          })}
+        </ul>
+      </div>
+    );
+  };
+ 
+  
   let points = () => {
     var Arr = receipeData.instructions.split("\n");
     Arr = Arr.filter(function(el) {
@@ -16,11 +33,7 @@ const Receipe = props => {
     });
   };
 
-  let ingredients = () => {
-    return receipeData.usedIngredients.map(ingredient => {
-      return <li>{ingredient.originalString}</li>;
-    });
-  };
+  
 
   let MissingIngredients = () => {
     if (receipeData.missedIngredientCount != 0) {
@@ -39,17 +52,53 @@ const Receipe = props => {
     }
   };
 
-  return (
-    <div className="main_wrapper">
-      <h2>{receipeData.title}</h2>
-      <img src={receipeData.image} />
-      <div>
-        Ingredients:<ul>{ingredients()}</ul>
-      </div>
-        {MissingIngredients()}
-        <div>Instructions:
-      <ul>{points()}</ul></div>
+  let Rec = (
+    <div
+      className="sss"
+      onClick={() => {
+        props.onSelection({
+          isSelected: true,
+          index: props.index,
+          receipeData: props.receipeData
+        });
+      }}
+    >
+      <img src={`${receipeData.image}`} />
+      <h3>{receipeData.title}</h3>
+       {ingredients()}
     </div>
+    
   );
+  if (props.Selected.isSelected) {
+
+    Rec = (
+      <div className="main_wrapper">
+        <h2>{props.Selected.receipeData.title}</h2>
+        <img src={props.Selected.receipeData.image} />
+        <div>
+          Ingredients:<ul>{ingredients()}</ul>
+        </div>
+        {MissingIngredients()}
+        <div>
+          Instructions:
+          <ul>{points()}</ul>
+        </div>
+      </div>
+    );
+  }
+
+  return(<div> { Rec }</div>);
 };
-export default Receipe;
+
+const mapStateToProps = state => {
+  return { Selected: state.selectedReceipe };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSelection: selectedData =>
+      dispatch({ type: "ReceipeSelected", payload: selectedData })
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Receipe);

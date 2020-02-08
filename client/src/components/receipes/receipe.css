@@ -5,3 +5,20 @@
     display: inline-block;
     margin:15px;
 }
+
+.sss{
+    text-align: center;
+    background: white;
+    margin-bottom: 23px;
+    width:25%
+}
+
+.sss img{
+    margin-top: 5%;
+    width:90%
+}
+
+
+.sss Ingredients{
+    text-align: left;
+}

@@ -1,4 +1,9 @@
 const initialState = {
+    selectedReceipe:{
+        isSelected:false,
+        index:-1,
+        receipeData:{}
+    },
   ingredientsCount: 1,
   ingredients: "",
   tempIngredient: "",
@@ -380,6 +385,14 @@ const reducer = (state = initialState, action) => {
       ...state,
       receipes: action.payload,
       loading:false
+    };
+  }
+  else if (action.type === "ReceipeSelected") {
+      var metaData= action.payload
+      console.log(action.payload)
+    return {
+      ...state,
+      selectedReceipe:metaData
     };
   }
   return state;

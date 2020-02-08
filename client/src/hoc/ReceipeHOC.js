@@ -6,8 +6,8 @@ import Receipe from '../components/receipes/receipe'
 class ReceipeHOC extends Component{
     render(){
         return(
-            this.props.receipes.map(receipe=>{
-               return <Receipe receipeData={receipe}/>
+            this.props.receipes.map((receipe,index)=>{
+               return <Receipe index={index} receipeData={receipe}/>
             })
         )
     }
