@@ -394,7 +394,14 @@ const reducer = (state = initialState, action) => {
       ...state,
       selectedReceipe:metaData
     };
-  }
+  } else if (action.type === "backDropClicked") {
+    var metaData= action.payload
+    console.log(action.payload)
+  return {
+    ...state,
+    selectedReceipe:metaData
+  };
+}
   return state;
 };
 

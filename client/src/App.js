@@ -2,14 +2,18 @@ import React from "react";
 import Navs from './components/landing/navbar'
 import FormPage from './components/formPage/formPage'
 import ReceipeHOC from './hoc/ReceipeHOC'
+import Login from './components/Login&SignUP/Login'
+import Signup from './components/Login&SignUP/Signup'
 import './App.css'
 
 function App() {
   return (
     <div className="App">
-    {/* <Navs/>
-    <FormPage/> */}
-    <ReceipeHOC/>
+     {/* <Navs/> */}
+     {/* <Login/> */}
+     <Signup/>
+    {/* <FormPage/>  */}
+    {/* <ReceipeHOC/> */}
   </div>);
 }
 

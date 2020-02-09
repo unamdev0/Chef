@@ -1,6 +1,7 @@
-input{
+.input{
+    display: block;
     
-    border-radius: 5px;
+    border-radius: 0px;
     border-bottom:1px solid #584141;
     border-top: none;
     border-left: none;

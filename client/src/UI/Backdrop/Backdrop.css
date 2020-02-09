@@ -2,7 +2,7 @@
   height: 100%;
   width: 100%;
   position: fixed;
-  z-index: 100;
+  /* z-index: 100; */
   border: 1px solid #ccc;
   left: 0;
   top: 0;

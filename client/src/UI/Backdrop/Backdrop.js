@@ -1,10 +1,27 @@
 import "./Backdrop.css";
 import React from "react";
+import { connect} from 'react-redux'
 
 const Backdrop = props => {
-  return props.show ? (
-    <div className="Backdrop" onClick={props.clicked}></div>
+  return props.isVisible ? (
+    <div className="Backdrop" onClick={()=>{props.onclick({
+      isSelected: false,
+      index: -1,
+      receipeData: {}
+    })}}></div>
   ) : null;
 };
 
-export default Backdrop;
+const mapStateToProps=state=>{
+  return{Selected:state.selectedReceipe}
+}
+
+
+const mapDispatchToProps=dispatch=>{
+  return{
+    onclick:state=>
+      dispatch({type:"backDropClicked",payload:state})
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Backdrop);

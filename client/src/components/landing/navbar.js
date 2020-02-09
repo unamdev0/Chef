@@ -2,7 +2,7 @@ import React from "react";
 import "./navbar.css";
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import InputIcon from '@material-ui/icons/Input';
-import Enter from '../utils/Enter'
+import Enter from '../../UI/Enter/Enter'
 
 const Navs = props => {
   return (

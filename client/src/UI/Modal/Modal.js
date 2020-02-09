@@ -2,21 +2,16 @@ import React, { Component } from "react";
 import "./Modal.css";
 
 class Modal extends Component {
-  shouldComponentUpdate(nextProps) {
-    return (
-      nextProps.isVisible !== this.props.isVisible ||
-      nextProps.children !== this.props.children
-    );
-  }
-
   render() {
+    console.log(this.props.isVisible)
     return (
       <div
         style={{
+          
           opacity: this.props.isVisible ? "1" : "0",
           transform: this.props.isVisible
             ?"translateY(-100px)"
-            : "translateY(-100vh)" 
+            : "translateY(-100vh)" ,
         }}
         className="Modal"
       >

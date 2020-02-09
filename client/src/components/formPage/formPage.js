@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./formPage.css";
-import Enter from "../utils/Enter";
-import Cus_Button from "../utils/Cus_Button";
+import Enter from "../../UI/Enter/Enter";
+import Cus_Button from "../../UI/Cus_Button/Cus_Button";
 import axios from "axios";
 import { connect } from "react-redux";
 

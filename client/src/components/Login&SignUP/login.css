@@ -1,0 +1,20 @@
+.login{
+    float: none;
+    text-align: center;
+}
+
+.cred{
+    font-size: 20px;
+    margin-left: -320px;
+    margin-bottom: 15px;
+    margin-top:10px
+}
+
+.submitButton{
+    margin:15px;
+    width: 45%;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    background: #8f8acf;
+}

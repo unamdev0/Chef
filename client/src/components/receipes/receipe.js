@@ -53,30 +53,19 @@ const Receipe = props => {
   };
 
   let Rec = (
-    <div
-      className="sss"
-      onClick={() => {
-        props.onSelection({
-          isSelected: true,
-          index: props.index,
-          receipeData: props.receipeData
-        });
-      }}
-    >
-      <img src={`${receipeData.image}`} />
-      <h3>{receipeData.title}</h3>
-       {ingredients()}
-    </div>
     
+    <div></div>
   );
-  if (props.Selected.isSelected) {
-
+  if (props.Selected.isSelected && props.Selected.index==props.index) {
     Rec = (
-      <div className="main_wrapper">
+      <div>
+      <Backdrop isVisible={true}/>
+       <Modal isVisible={true} >
+         <div className="main_wrapper">
         <h2>{props.Selected.receipeData.title}</h2>
         <img src={props.Selected.receipeData.image} />
         <div>
-          Ingredients:<ul>{ingredients()}</ul>
+          <ul>{ingredients()}</ul>
         </div>
         {MissingIngredients()}
         <div>
@@ -84,10 +73,25 @@ const Receipe = props => {
           <ul>{points()}</ul>
         </div>
       </div>
+      </Modal>
+      </div>
     );
   }
 
-  return(<div> { Rec }</div>);
+  return(<div><div
+    className="sss"
+    onClick={() => {
+      props.onSelection({
+        isSelected: true,
+        index: props.index,
+        receipeData: props.receipeData
+      });
+    }}
+  >
+    <img src={`${receipeData.image}`} />
+    <h3>{receipeData.title}</h3>
+     {ingredients()}
+  </div> { Rec }</div>);
 };
 
 const mapStateToProps = state => {
