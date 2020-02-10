@@ -28,7 +28,9 @@ function validRegistrationDetails(data) {
   data.name = !isEmpty(data.name) ? data.name : "";
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
-  data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+  data.confirmPassword = !isEmpty(data.confirmPassword)
+    ? data.confirmPassword
+    : "";
   data.username = !isEmpty(data.username) ? data.username : "";
 
   if (Validator.isEmpty(data.name)) {
@@ -48,14 +50,14 @@ function validRegistrationDetails(data) {
   if (Validator.isEmpty(data.password)) {
     errors.password = "Password field is required";
   }
-  if (Validator.isEmpty(data.password2)) {
-    errors.password2 = "Confirm password field is required";
+  if (Validator.isEmpty(data.confirmPassword)) {
+    errors.confirmPassword = "Confirm password field is required";
   }
   if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
     errors.password = "Password must be at least 6 characters";
   }
-  if (!Validator.equals(data.password, data.password2)) {
-    errors.password2 = "Passwords must match";
+  if (!Validator.equals(data.password, data.confirmPassword)) {
+    errors.confirmPassword = "Passwords must match";
   }
 
   return {
@@ -65,40 +67,45 @@ function validRegistrationDetails(data) {
 }
 
 exports.validateRegistration = (req, res) => {
-  const { errors, isValid } = validRegistrationDetails(req.body);
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-  User.findOne({
-    $or: [{ email: req.body.email }, { username: req.body.username }]
-  }).then(user => {
-    if (user) {
-      return res
-        .status(400)
-        .json({ email: "Email/UserName is already registered" });
-    } else {
-      const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password,
-        avatar: req.body.avatar
-      });
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) {
-            console.log(err);
-            throw err;
-          }
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
-        });
-      });
+  console.log(req)
+  try {
+    const { errors, isValid } = validRegistrationDetails(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
     }
-  });
+    User.findOne({
+      $or: [{ email: req.body.email }, { username: req.body.username }]
+    }).then(user => {
+      if (user) {
+        return res
+          .status(400)
+          .json({ email: "Email/Username is already registered" });
+      } else {
+        const newUser = new User({
+          name: req.body.name,
+          email: req.body.email,
+          username: req.body.username,
+          password: req.body.password,
+          avatar: req.body.avatar
+        });
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) {
+              console.log(err);
+              throw err;
+            }
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(user => res.send(user))
+              .catch(err => console.log(err));
+          });
+        });
+      }
+    });
+  } catch (e) {
+    console.log("eror",e);
+  }
 };
 
 exports.validateLogin = (req, res) => {
