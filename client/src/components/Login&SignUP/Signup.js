@@ -5,6 +5,9 @@ import "./Signup.css";
 import Enter from "../../UI/Enter/Enter";
 import Axios from "axios";
 import qs from "qs";
+import { connect } from "react-redux";
+import Loader from '../Loader/Loader'
+
 
 const validation = e => {
   e.preventDefault();
@@ -44,6 +47,7 @@ const Signup = props => {
     <div>
       <Backdrop isVisible={true} />
       <Modal isVisible={true}>
+      <Loader/>
         <form name="signup" onSubmit={validation}>
           <div className="signup">
             <h1>Signup</h1>
@@ -70,9 +74,22 @@ const Signup = props => {
             <input className="submitButton" type="submit" />
           </div>
         </form>
+        
       </Modal>
     </div>
   );
 };
 
-export default Signup;
+const mapStateToProps = state => {
+  return { token: state.token, loading: state.loading };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    isAuthenticated: token =>
+      dispatch({ type: "isAuthenticated", payload: token }),
+    isLoading: loader => dispatch({ type: "isLoading", payload: loader })
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

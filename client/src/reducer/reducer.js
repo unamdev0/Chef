@@ -362,7 +362,8 @@ const initialState = {
         "instructions": "InstructionsPreheat the oven to 400 degrees. Coat a baking sheet with cooking spray.Cut the sweet potatoes in half lengthwise and place them cut side down on the prepared baking sheet.Place into the oven and roast for 30-40 minutes, or until very tender. Remove from the oven and allow to cool.Reduce the oven to 375 degrees. Line a baking sheet with parchment paper.Scoop out the cooled insides of the sweet potatoes into a large mixing bowl; discard the skins. Add the grated apple and eggs to the bowl. Slowly add the flour, one cup at a time, mixing well between each addition.Working on a lightly floured surface, knead the dough 3-4 times until it comes together. Using a rolling pin, roll the dough to 1/4-inch thickness. Use more flour as needed.Use a cookie cutter to cut out desired shape and place onto the prepared baking sheet.Place into oven and bake until the edges are golden brown, about 20-25 minutes. Remove from the oven and allow to cool completely on a wire rack.Store in a sealed container in the refrigerator or freezer. My dog loves them right out of the freezer. Enjoy."
     }
 ],
-  loading: true
+  loading: false,
+  token:null
 };
 
 const reducer = (state = initialState, action) => {
@@ -401,7 +402,17 @@ const reducer = (state = initialState, action) => {
     ...state,
     selectedReceipe:metaData
   };
-}
+}else if (action.type === "isAuthenticated") {
+  return {
+    ...state,
+    token:action.payload
+  };
+}else if (action.type === "isLoading") {
+    return {
+      ...state,
+      loading:action.payload
+    };
+  }
   return state;
 };
 

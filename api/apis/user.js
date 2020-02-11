@@ -67,7 +67,6 @@ function validRegistrationDetails(data) {
 }
 
 exports.validateRegistration = (req, res) => {
-  console.log(req)
   try {
     const { errors, isValid } = validRegistrationDetails(req.body);
     if (!isValid) {
@@ -97,14 +96,32 @@ exports.validateRegistration = (req, res) => {
             newUser.password = hash;
             newUser
               .save()
-              .then(user => res.send(user))
+              .then(user => {
+                const payload = {
+                  id: user.id,
+                  name: user.name
+                };
+                jwt.sign(
+                  payload,
+                  process.env.secretOrKey,
+                  {
+                    expiresIn: 31556926
+                  },
+                  (err, token) => {
+                    res.json({
+                      success: true,
+                      token: token
+                    });
+                  }
+                );
+              })
               .catch(err => console.log(err));
           });
         });
       }
     });
   } catch (e) {
-    console.log("eror",e);
+    console.log("eror", e);
   }
 };
 
