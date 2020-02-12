@@ -5,27 +5,29 @@ import "./login.css";
 import Enter from "../../UI/Enter/Enter";
 import Axios from "axios";
 import qs from "qs";
+import { connect } from "react-redux";
 
-const validation = e => {
+const validation = (e, isAuthenticated) => {
   e.preventDefault();
-  const password = document.forms["signup"]["password"].value;
-  const username = document.forms["signup"]["username"].value;
+  const password = document.forms["login"]["password"].value;
+  const username = document.forms["login"]["username"].value;
   try {
     Axios({
       method: "post",
       url: "/user/login",
       data: qs.stringify({
         password,
-        username,
+        emailorUsername: username
       }),
       headers: {
         "content-type": "application/x-www-form-urlencoded;charset=utf-8"
       }
     })
       .then(data => {
-        console.log("data", data);
+        isAuthenticated(data.data.token);
       })
       .catch(function(error) {
+        alert(error);
         console.log("wewrw", error);
       });
   } catch (e) {
@@ -33,16 +35,20 @@ const validation = e => {
   }
 };
 
-
 const Login = props => {
   return (
     <div>
       <Backdrop isVisible={true} />
       <Modal isVisible={true}>
-        <form name="login" onSubmit={e=>{validation(e)}}>
+        <form
+          name="login"
+          onSubmit={e => {
+            validation(e, props.isAuthenticated);
+          }}
+        >
           <div className="login">
             <h1>Login</h1>
-            <div className="cred">Username</div>
+            <div className="cred">Email or Username</div>
             <Enter name="username" width="90%" />
             <div className="cred">Password</div>
             <Enter name="password" type="password" width="90%" />
@@ -54,4 +60,15 @@ const Login = props => {
   );
 };
 
-export default Login;
+const mapStateToProps = state => {
+  return { token: state.token };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    isAuthenticated: token =>
+      dispatch({ type: "isAuthenticated", payload: token })
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

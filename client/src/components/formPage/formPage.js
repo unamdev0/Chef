@@ -30,6 +30,7 @@ class FormPage extends Component {
         enter.push(
           <div>
             <Enter
+              width="80%"
               key={i}
               handleChange={e => {
                 this.handleChange(e);

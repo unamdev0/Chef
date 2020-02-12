@@ -3,8 +3,7 @@ import './Cus_Button.css'
 
 const Cus_Button=props=>{
     return(
-        <button onClick={props.onclick} title={props.title}>+</button>
-        
+        <button onClick={props.onclick} title={props.title}>+</button> 
     )
 }
 

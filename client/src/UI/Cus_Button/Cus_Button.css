@@ -10,6 +10,7 @@ button{
     border:none;
     right: 5px;
     bottom: 10px;
-    position: absolute;
     outline: none;
+    float: right;
+    margin:8px;
 }

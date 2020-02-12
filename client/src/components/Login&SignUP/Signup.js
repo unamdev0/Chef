@@ -6,10 +6,9 @@ import Enter from "../../UI/Enter/Enter";
 import Axios from "axios";
 import qs from "qs";
 import { connect } from "react-redux";
-import Loader from '../Loader/Loader'
 
 
-const validation = e => {
+const validation = (e,isAuthenticated) => {
   e.preventDefault();
   const confirmPassword = document.forms["signup"]["confirmPassword"].value;
   const password = document.forms["signup"]["password"].value;
@@ -32,9 +31,10 @@ const validation = e => {
       }
     })
       .then(data => {
-        console.log("data", data);
+        isAuthenticated(data.data.token)
       })
       .catch(function(error) {
+        alert(error)
         console.log("wewrw", error);
       });
   } catch (e) {
@@ -46,9 +46,8 @@ const Signup = props => {
   return (
     <div>
       <Backdrop isVisible={true} />
-      <Modal isVisible={true}>
-      <Loader/>
-        <form name="signup" onSubmit={validation}>
+      <Modal isVisible={true}>      
+        <form name="signup" onSubmit={(e)=>{validation(e,props.isAuthenticated)}}>
           <div className="signup">
             <h1>Signup</h1>
             <div className="cred">Name</div>
@@ -81,14 +80,13 @@ const Signup = props => {
 };
 
 const mapStateToProps = state => {
-  return { token: state.token, loading: state.loading };
+  return { token: state.token};
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     isAuthenticated: token =>
       dispatch({ type: "isAuthenticated", payload: token }),
-    isLoading: loader => dispatch({ type: "isLoading", payload: loader })
   };
 };
 

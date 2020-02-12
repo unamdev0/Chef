@@ -143,7 +143,7 @@ exports.validateLogin = (req, res) => {
 
     bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch) {
-        return res.status(400).send("Wrong password");
+        return res.status(400).json({error:"Wrong password"});
       } else {
         const payload = {
           id: user.id,
