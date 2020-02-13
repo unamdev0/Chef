@@ -30,7 +30,7 @@ class FormPage extends Component {
         enter.push(
           <div>
             <Enter
-              width="80%"
+              width="50%"
               key={i}
               handleChange={e => {
                 this.handleChange(e);
@@ -43,7 +43,13 @@ class FormPage extends Component {
       return (
         <form onSubmit={this.handleSubmit}>
           {enter}
-          <input type="submit" />
+          <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" />
+          <Cus_Button
+          onclick={() => {
+            this.props.onAddingIngredient();
+          }}
+          title="Add more items"
+        />
         </form>
       );
     }
@@ -54,12 +60,7 @@ class FormPage extends Component {
       <div className="main">
         <h2>What ingredients do you have?</h2>
         {this.renderEnter()}
-        <Cus_Button
-          onclick={() => {
-            this.props.onAddingIngredient();
-          }}
-          title="Add more items"
-        />
+        
       </div>
     );
   }

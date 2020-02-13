@@ -12,7 +12,8 @@ const Enter = props => {
         paddingTop: `${props.padup}`,
         marginLeft: `${props.marleft}`,
         width: `${props.width}`,
-        height: `${props.height}`
+        height: `${props.height}`,
+        display: `${props.display?props.display:"block"}`
       }}
       placeholder={`${props.placeholder ? props.placeholder : ""}`}
     ></input>
