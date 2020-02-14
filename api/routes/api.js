@@ -4,5 +4,5 @@ const api = require("../apis/index");
 
 router.post("/ingredients", api.ingredients);
 
-router.get("/receipe", api.receipe);
+router.post("/receipe", api.receipe);
 module.exports = router;

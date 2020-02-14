@@ -1,11 +1,9 @@
 .main {
   position: relative;
-  display: block;
+  display: inline-block;
   width: 35%;
   border-radius: 10px;
   border:4px solid rgb(180, 72, 72);
   text-align: center;
-  top:30%;
-  left: 35%;
-  padding-bottom: 2%;
+  margin:15% 7%;
 }

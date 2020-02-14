@@ -7,7 +7,8 @@ const initialState = {
   ingredientsCount: 1,
   ingredients: "",
   tempIngredient: "",
-  receipes:[],
+  ingredientSearch:[],
+  receipeSearch:{},
   loading: false,
   token:null,
   newReceipe:{
@@ -20,7 +21,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   if (action.type === "Add_Ingredients") {
-    console.log(state);
     return {
       ingredientsCount: state.ingredientsCount + 1,
       ingredients: state.ingredients
@@ -36,13 +36,21 @@ const reducer = (state = initialState, action) => {
   } else if (action.type === "Receipe_data") {
     return {
       ...state,
-      receipes: action.payload,
+      ingredientSearch: action.payload,
+      receipeSearch:[],
+      loading:false
+    };
+  }else if (action.type === "ReceipeSearch") {
+    console.log(state)
+    return {
+      ...state,
+      ingredientSearch: [],
+      receipeSearch:action.payload,
       loading:false
     };
   }
   else if (action.type === "ReceipeSelected") {
       var metaData= action.payload
-      console.log(action.payload)
     return {
       ...state,
       selectedReceipe:metaData

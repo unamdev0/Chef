@@ -6,7 +6,8 @@ import axios from "axios";
 import { connect } from "react-redux";
 
 class FormPage extends Component {
-  handleSubmit = event => {
+  handleSubmit = (event,type) => {
+    if(type==="ingredients"){
     event.preventDefault();
     const ingredients = this.props.ingredients;
     axios.post("/ingredients", { ingredients }).then(res => {
@@ -15,13 +16,22 @@ class FormPage extends Component {
         this.props.onAddingReceipes(res.data);
       }
     });
+  }else{
+    event.preventDefault();
+      const receipe=(document.getElementsByName("receipeSearch")[0].value)
+      axios.post("/receipe",{receipe}).then(res=>{
+        if(res.data){
+          this.props.onReceipeSearch(res.data)
+        }
+      })
+  }
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     this.props.TempData(e.target.value);
-  };
+  }
 
-  renderEnter() {
+  ingredientsSearch() {
     if (this.props.ingredientsCount == 0) {
       return <div></div>;
     } else {
@@ -33,7 +43,7 @@ class FormPage extends Component {
               width="50%"
               key={i}
               handleChange={e => {
-                this.handleChange(e);
+                this.handleChange(e,"ingredients");
               }}
             />
             <br />
@@ -41,7 +51,7 @@ class FormPage extends Component {
         );
       }
       return (
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={()=>{this.handleSubmit("ingredients")}}>
           {enter}
           <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" />
           <Cus_Button
@@ -57,10 +67,21 @@ class FormPage extends Component {
 
   render() {
     return (
+      <div>
       <div className="main">
         <h2>What ingredients do you have?</h2>
-        {this.renderEnter()}
-        
+        {this.ingredientsSearch()}
+      </div>
+      <div className="main">
+        <h2>Search For a receipe</h2>
+        <form onSubmit={(e)=>{this.handleSubmit(e,"receipe")}}>
+        <Enter
+              name="receipeSearch"
+              width="50%"
+            />
+          <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" />
+        </form>
+      </div>
       </div>
     );
   }
@@ -70,7 +91,7 @@ const mapStateToProps = state => {
   return {
     ingredients: state.ingredients,
     ingredientsCount: state.ingredientsCount,
-    tempIngredient: state.tempIngredient
+    tempIngredient: state.tempIngredient,
   };
 };
 
@@ -83,6 +104,9 @@ const mapDispatchToProps = dispatch => {
     },
     onAddingReceipes: receipeData => {
       dispatch({ type: "Receipe_data", payload: receipeData });
+    },
+    onReceipeSearch:receipeData=>{
+      dispatch({ type: "ReceipeSearch", payload: receipeData });
     }
   };
 };

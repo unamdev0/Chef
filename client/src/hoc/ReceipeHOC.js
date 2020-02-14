@@ -5,17 +5,24 @@ import Receipe from '../components/receipes/receipe'
 
 class ReceipeHOC extends Component{
     render(){
+        if(this.props.ingredientSearch){
         return(
-            this.props.receipes.map((receipe,index)=>{
-               return <Receipe index={index} receipeData={receipe}/>
+            this.props.ingredientSearch.map((receipe,index)=>{
+               return <Receipe type="ingredientSearch" index={index} receipeData={receipe}/>
             })
         )
-    }
+    }else if(this.props.receipeSearch){
+        return(
+            this.props.receipeSearch.result.map((receipe,index)=>{
+               return <Receipe type="receipeSearch" index={index} imageUrl={this.props.receipeSearch.baseUrl} receipeData={receipe}/>
+            })
+        )
+    }}
 }
 
 
 const mapStateToProps=state=>{
-    return {receipes:state.receipes}
+    return {ingredientSearch:state.ingredientSearch,receipeSearch:state.receipeSearch}
 }
 
 export default connect(mapStateToProps)(ReceipeHOC)
