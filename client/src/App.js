@@ -12,16 +12,16 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navs />
+        {/* <Navs />
         <Route exact path="/" component={FormPage} />
         <Route exact path="/register" component={Signup} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/login" component={Login} /> */}
         {/* <Login/> */}
         {/* <NewReceipe/> */}
         {/* <Signup/> */}
         {/* <FormPage/>  */}
-        {/* <ReceipeHOC/> */}
-      </div>{" "}
+        <ReceipeHOC/>
+      </div>
     </Router>
   );
 }

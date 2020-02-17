@@ -5,7 +5,13 @@ import Backdrop from "../../UI/Backdrop/Backdrop";
 import Modal from "../../UI/Modal/Modal";
 
 const Receipe = props => {
+  let Rec = (
+    
+    <div></div>
+  );
   const receipeData = props.receipeData;
+  if(props.type=="ingredientSearch"){
+  
   let ingredients = () => {
     return (
       <div className="Ingredients">
@@ -52,10 +58,7 @@ const Receipe = props => {
     }
   };
 
-  let Rec = (
-    
-    <div></div>
-  );
+  
   if (props.Selected.isSelected && props.Selected.index==props.index) {
     Rec = (
       <div>
@@ -92,6 +95,26 @@ const Receipe = props => {
     <h3>{receipeData.title}</h3>
      {ingredients()}
   </div> { Rec }</div>);
+  }else{
+    return(
+    <div><div
+      className="sss"
+      onClick={() => {
+        props.onSelection({
+          isSelected: true,
+          index: props.index,
+          receipeData: props.receipeData
+        });
+      }}
+    >
+      <img className="ReceipeImage" src={`${props.imageUrl+receipeData.image}`} />
+      <h3>{receipeData.title}</h3>
+        {receipeData.instructions} 
+    </div> { Rec }</div>
+    
+    );
+
+  }
 };
 
 const mapStateToProps = state => {

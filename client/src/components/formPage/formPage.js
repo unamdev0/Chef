@@ -11,7 +11,6 @@ class FormPage extends Component {
     event.preventDefault();
     const ingredients = this.props.ingredients;
     axios.post("/ingredients", { ingredients }).then(res => {
-      console.log("res", res);
       if (res.data) {
         this.props.onAddingReceipes(res.data);
       }
@@ -21,6 +20,7 @@ class FormPage extends Component {
       const receipe=(document.getElementsByName("receipeSearch")[0].value)
       axios.post("/receipe",{receipe}).then(res=>{
         if(res.data){
+          console.log(res.data)
           this.props.onReceipeSearch(res.data)
         }
       })
@@ -28,6 +28,7 @@ class FormPage extends Component {
   };
 
   handleChange = (e) => {
+    e.preventDefault();
     this.props.TempData(e.target.value);
   }
 
@@ -43,7 +44,7 @@ class FormPage extends Component {
               width="50%"
               key={i}
               handleChange={e => {
-                this.handleChange(e,"ingredients");
+                this.handleChange(e);
               }}
             />
             <br />
@@ -51,11 +52,12 @@ class FormPage extends Component {
         );
       }
       return (
-        <form onSubmit={()=>{this.handleSubmit("ingredients")}}>
+        <form onSubmit={(e)=>{this.handleSubmit(e,"ingredients")}}>
           {enter}
           <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" />
           <Cus_Button
-          onclick={() => {
+          onclick={(e) => {
+            e.preventDefault()
             this.props.onAddingIngredient();
           }}
           title="Add more items"
