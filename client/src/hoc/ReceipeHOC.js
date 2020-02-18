@@ -5,6 +5,8 @@ import Receipe from '../components/receipes/receipe'
 
 class ReceipeHOC extends Component{
     render(){
+        console.log("Here")
+
         if(this.props.ingredientSearch!=null){
         return(
             this.props.ingredientSearch.map((receipe,index)=>{

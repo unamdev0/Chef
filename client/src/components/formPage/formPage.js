@@ -9,10 +9,12 @@ class FormPage extends Component {
   handleSubmit = (event,type) => {
     if(type==="ingredients"){
     event.preventDefault();
+    
     const ingredients = this.props.ingredients;
     axios.post("/ingredients", { ingredients }).then(res => {
       if (res.data) {
         this.props.onAddingReceipes(res.data);
+        this.props.history.push('/receipes');
       }
     });
   }else{
@@ -20,8 +22,9 @@ class FormPage extends Component {
       const receipe=(document.getElementsByName("receipeSearch")[0].value)
       axios.post("/receipe",{receipe}).then(res=>{
         if(res.data){
-          console.log(res.data)
           this.props.onReceipeSearch(res.data)
+          this.props.history.push('/receipes');
+
         }
       })
   }
