@@ -3,13 +3,15 @@ import "./formPage.css";
 import Enter from "../../UI/Enter/Enter";
 import Cus_Button from "../../UI/Cus_Button/Cus_Button";
 import axios from "axios";
+import Loader from '../../UI/Loader/Loader'
+import Backdrop from '../../UI/Backdrop/Backdrop'
 import { connect } from "react-redux";
 
 class FormPage extends Component {
   handleSubmit = (event,type) => {
     if(type==="ingredients"){
     event.preventDefault();
-    
+    this.props.loader();
     const ingredients = this.props.ingredients;
     axios.post("/ingredients", { ingredients }).then(res => {
       if (res.data) {
@@ -19,6 +21,7 @@ class FormPage extends Component {
     });
   }else{
     event.preventDefault();
+    this.props.loader();
       const receipe=(document.getElementsByName("receipeSearch")[0].value)
       axios.post("/receipe",{receipe}).then(res=>{
         if(res.data){
@@ -73,6 +76,7 @@ class FormPage extends Component {
   render() {
     return (
       <div>
+        {this.props.loading ? <div><Backdrop isVisible={true}/><Loader/></div> : ""}
       <div className="main">
         <h2>What ingredients do you have?</h2>
         {this.ingredientsSearch()}
@@ -94,6 +98,7 @@ class FormPage extends Component {
 
 const mapStateToProps = state => {
   return {
+    loading:state.loading,
     ingredients: state.ingredients,
     ingredientsCount: state.ingredientsCount,
     tempIngredient: state.tempIngredient,
@@ -103,7 +108,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onAddingIngredient: () =>
-      dispatch({ type: "Add_Ingredients", payload: "" }),
+      dispatch({ type: "Add_Ingredients", payload: null }),
     TempData: tempData => {
       dispatch({ type: "Temp_Ingredients", payload: tempData });
     },
@@ -112,6 +117,9 @@ const mapDispatchToProps = dispatch => {
     },
     onReceipeSearch:receipeData=>{
       dispatch({ type: "ReceipeSearch", payload: receipeData });
+    },
+    loader:()=>{
+      dispatch({type:"isLoading",payload:true})
     }
   };
 };

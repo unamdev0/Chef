@@ -13,13 +13,17 @@ class ReceipeHOC extends Component{
                return <Receipe type="ingredientSearch" index={index} receipeData={receipe}/>
             })
         )
-    }else{
+    }else if(this.props.receipeSearch!=null){
         return(
             this.props.receipeSearch.results.map((receipe,index)=>{
                return <Receipe type="receipeSearch" index={index} imageUrl={this.props.receipeSearch.baseUri} receipeData={receipe}/>
             })
         )
-    }}
+    }else{
+        this.props.history.push('/');
+        return(<div></div>)
+    }
+}
 }
 
 

@@ -1,7 +1,8 @@
 .container {
     text-align: center;
-    z-index: -1000;
+    z-index: 111111;
     position: fixed;
+    margin:15% 35% 
 }
 
 section {

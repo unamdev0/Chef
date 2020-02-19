@@ -8,26 +8,21 @@ import {connect} from 'react-redux'
 class NewReceipe extends Component{
   handleSubmit = event => {
     event.preventDefault();
-    const ingredients = this.props.ingredients;
-    axios.post("/ingredients", { ingredients }).then(res => {
-      console.log("res", res);
-      if (res.data) {
-        this.props.onAddingReceipes(res.data);
-      }
-    });
+  
   };
 
   handleChange = e => {
-    this.props.TempData(e.target.value);
+    this.props.newReceipeData.TempData(e.target.value);
+
   };
 
-  renderEnter() {
+  renderInstruction() {
     if (this.props.ingredientsCount == 0) {
       return <div></div>;
     } else {
-      let enter = [];
-      for (let i = 0; i < this.props.ingredientsCount; i++) {
-        enter.push(
+      let instructionsEnter = [];
+      for (let i = 0; i < this.props.newReceipeData.ingredientsCount; i++) {
+        instructionsEnter.push(
           <div>
             <Enter
               width="50%"
@@ -42,8 +37,9 @@ class NewReceipe extends Component{
       }
       return (
         <form onSubmit={this.handleSubmit}>
-          {enter}
-          <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" />
+          <h2>Ingredients Needed</h2>
+          {instructionsEnter}
+          {/* <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" /> */}
           <Cus_Button
           onclick={() => {
             this.props.onAddingIngredient();
@@ -57,12 +53,16 @@ class NewReceipe extends Component{
 
   render() {
     return (
-      <div className="main">
-        <h2>Ingredients</h2>
-        {this.renderEnter()}
+      <div className="newReceipe">
+        <div><h2>Title</h2><Enter/></div>
+        <div>
+        {this.renderInstruction()}</div>
         <h2>Instructions</h2>
-        {this.renderEnter()}
-      </div>
+        {/* {this.renderEnter()} */}
+        <div>
+        <h2>Image link</h2>
+        <Enter/>
+        </div></div>
     );
   }
 }
@@ -77,6 +77,9 @@ const mapStateToProps=state=>{
 
 const mapDispatchToProsps=dispatch=>{
   return{
+    onAddingIngredient:()=>dispatch({
+      type:'newReceipeIngredient',payload:null
+    })
   }
 
 }

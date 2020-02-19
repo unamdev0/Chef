@@ -15,13 +15,17 @@ const initialState = {
     ingredients: "",
     tempIngredient: "",
     ingredientsCount: 1,
-    instructions: []
+    instructionsCount:1,
+    instructions: [],
+    title:null,
+    imageUrl:null
   }
 };
 
 const reducer = (state = initialState, action) => {
   if (action.type === "Add_Ingredients") {
     return {
+      ...state,
       ingredientsCount: state.ingredientsCount + 1,
       ingredients: state.ingredients
         ? state.ingredients + "," + state.tempIngredient
@@ -70,10 +74,20 @@ const reducer = (state = initialState, action) => {
       loading: action.payload
     };
   } else if (action.type === "newReceipeIngredient") {
-    var newReceipeData = {};
+    var newReceipeData={
+      ingredientsCount: state.newReceipe.ingredientsCount + 1,
+      ingredients: state.newReceipe.ingredients
+        ? state.newReceipe.ingredients + "," + state.newReceipe.tempIngredient
+        : state.newReceipe.tempIngredient,
+      tempIngredient: null,
+      instructions:state.newReceipe.instructions,
+      title:state.newReceipe.title,
+      instructionsCount:state.newReceipe.instructionsCount,
+      imageUrl:state.newReceipe.imageUrl
+    }
     return {
       ...state,
-      loading: action.payload
+     newReceipe:newReceipeData
     };
   }
   return state;

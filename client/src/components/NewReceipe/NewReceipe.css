@@ -3,3 +3,9 @@
     text-align: center;
 }
 
+.newReceipe{
+    border: 2px solid black;
+    margin:10px 35%;
+    padding:5px;
+    text-align: center;
+}
