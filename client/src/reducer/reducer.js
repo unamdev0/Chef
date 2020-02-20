@@ -12,7 +12,7 @@ const initialState = {
   loading: false,
   token: null,
   newReceipe: {
-    ingredients: "",
+    ingredients: [],
     tempIngredient: "",
     ingredientsCount: 1,
     instructionsCount:1,
@@ -76,9 +76,7 @@ const reducer = (state = initialState, action) => {
   } else if (action.type === "newReceipeIngredient") {
     var newReceipeData={
       ingredientsCount: state.newReceipe.ingredientsCount + 1,
-      ingredients: state.newReceipe.ingredients
-        ? state.newReceipe.ingredients + "," + state.newReceipe.tempIngredient
-        : state.newReceipe.tempIngredient,
+      ingredients: state.newReceipe.ingredients,
       tempIngredient: null,
       instructions:state.newReceipe.instructions,
       title:state.newReceipe.title,
@@ -88,6 +86,28 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
      newReceipe:newReceipeData
+    };
+  }else if (action.type === "newReceipeInstruction") {
+    var newReceipeData={
+      instructionsCount: state.newReceipe.instructionsCount + 1,
+      instructions: state.newReceipe.ingredients.push(action.payload),
+      tempIngredient: state.newReceipe.tempIngredient,
+      ingredients:state.newReceipe.ingredients,
+      title:state.newReceipe.title,
+      instructionsCount:state.newReceipe.instructionsCount,
+      imageUrl:state.newReceipe.imageUrl
+    }
+    return {
+      ...state,
+     newReceipe:newReceipeData
+    };
+  }else if (action.type === "changeIngredient") {
+    var newIngredient=state.newReceipe
+    newIngredient.ingredients[action.payload.i]=action.payload.val
+    console.log(newIngredient,action.payload)
+    return {
+      ...state,
+    newReceipe:newIngredient
     };
   }
   return state;

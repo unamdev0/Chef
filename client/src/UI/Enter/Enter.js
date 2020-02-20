@@ -8,6 +8,8 @@ const Enter = props => {
       name={props.name?props.name:""}
       type={props.type?props.type:"text"}
       onChange={props.handleChange}
+      value={`${props.value?props.value:""}` }
+      placeholder={`${props.placeholder ? props.placeholder : ""}`}
       style={{
         paddingTop: `${props.padup}`,
         marginLeft: `${props.marleft}`,
@@ -15,7 +17,7 @@ const Enter = props => {
         height: `${props.height}`,
         display: `${props.display?props.display:"block"}`
       }}
-      placeholder={`${props.placeholder ? props.placeholder : ""}`}
+      
     ></input>
   );
 };
