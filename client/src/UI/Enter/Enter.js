@@ -8,7 +8,7 @@ const Enter = props => {
       name={props.name?props.name:""}
       type={props.type?props.type:"text"}
       onChange={props.handleChange}
-      value={`${props.value?props.value:""}` }
+      
       placeholder={`${props.placeholder ? props.placeholder : ""}`}
       style={{
         paddingTop: `${props.padup}`,

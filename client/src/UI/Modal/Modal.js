@@ -3,7 +3,6 @@ import "./Modal.css";
 
 class Modal extends Component {
   render() {
-    console.log(this.props.isVisible)
     return (
       <div
         style={{

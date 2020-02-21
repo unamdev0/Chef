@@ -23,7 +23,15 @@ const User = new Schema(
     avatar: {
       type: String,
       required: false
-    }
+    },
+    Receipes: [
+      {
+        ReceipeId: {
+          type: Schema.Types.ObjectId,
+          ref: "Receipes"
+        }
+      }
+    ]
   },
   {
     timestamps: {
@@ -33,4 +41,4 @@ const User = new Schema(
   }
 );
 
-module.exports=mongoose.model('users',User)
+module.exports = mongoose.model("users", User);

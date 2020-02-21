@@ -1,38 +1,45 @@
-import React,{Component} from 'react'
-import Enter from '../../UI/Enter/Enter'
-import './NewReceipe.css'
-import Modal from '../../UI/Modal/Modal'
-import Cus_Button from '../../UI/Cus_Button/Cus_Button'
-import axios from 'axios'
-import {connect} from 'react-redux'
-class NewReceipe extends Component{
+import React, { Component } from "react";
+import Enter from "../../UI/Enter/Enter";
+import "./NewReceipe.css";
+import Modal from "../../UI/Modal/Modal";
+import Cus_Button from "../../UI/Cus_Button/Cus_Button";
+import axios from "axios";
+import { connect } from "react-redux";
+class NewReceipe extends Component {
   handleSubmit = event => {
     event.preventDefault();
-  
+    const newReceipe = this.props.newReceipeData;
+    axios.post("/newReceipe", newReceipe).then(res => {
+      console.log(res.data);
+    });
   };
 
-  handleChange = (e,i) => {
-   console.log(i)
-    this.props.onChanging(i,e.target.value);
-
+  handleChange = (e, type) => {
+    e.preventDefault();
+    if (type === "instruction") {
+      this.props.onChanging({ category: "instruction", value: e.target.value });
+    } else {
+      this.props.onChanging({ category: "ingredient", value: e.target.value });
+    }
   };
 
   renderInstruction() {
-    if (this.props.newReceipeData.ingredientsCount == 0 || this.props.newReceipeData.instructionsCount==0) {
+    if (
+      this.props.newReceipeData.ingredientsCount == 0 ||
+      this.props.newReceipeData.instructionsCount == 0
+    ) {
       return <div></div>;
     } else {
-      let value=["dsf"]
       let instructionsEnter = [];
-      let ingredientsEnter =[]
+      let ingredientsEnter = [];
       for (let i = 0; i < this.props.newReceipeData.ingredientsCount; i++) {
         ingredientsEnter.push(
           <div>
             <Enter
               width="50%"
               key={i}
-              value={this.props.newReceipeData.ingredients[i]}
-              handleChange={(e,i) => {
-                this.handleChange(e,i);
+              handleChange={e => {
+                this.handleChange(e, "ingredient");
               }}
             />
             <br />
@@ -43,12 +50,10 @@ class NewReceipe extends Component{
         instructionsEnter.push(
           <div>
             <Enter
-              width="50%"
+              width="80%"
               key={i}
-              // value={this.props.newReceipeData.instruction[i]}
-              handleChange={(e) => {
-                console.log(`${i}`)
-                this.handleChange(e,`${i}`);
+              handleChange={e => {
+                this.handleChange(e, "instruction");
               }}
             />
             <br />
@@ -59,21 +64,25 @@ class NewReceipe extends Component{
         <form onSubmit={this.handleSubmit}>
           <h2>Ingredients Needed</h2>
           {ingredientsEnter}
-          {/* <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" /> */}
           <Cus_Button
-          onclick={() => {
-            this.props.onAddingIngredient();
-          }}
-          title="Add more items"
-        />
-        <h2>Instructions</h2>
-        {instructionsEnter}
-        <Cus_Button
-          onclick={() => {
-            this.props.onAddingInstruction();
-          }}
-          title="Add more items"
-        />
+            onclick={() => {
+              this.props.onAddingIngredient();
+            }}
+            title="Add more items"
+          />
+          <h2>Instructions</h2>
+          {instructionsEnter}
+          <Cus_Button
+            onclick={() => {
+              this.props.onAddingInstruction();
+            }}
+            title="Add more items"
+          />
+          <input
+            style={{ width: "15%", display: "inline" }}
+            className="submitButton"
+            type="submit"
+          />
         </form>
       );
     }
@@ -81,40 +90,47 @@ class NewReceipe extends Component{
 
   render() {
     return (
-      <div className="newReceipe">
-        <div><h2>Title</h2><Enter/></div>
-        <div>
-        {this.renderInstruction()}</div>
-        <div>
-        <h2>Image link</h2>
-        <Enter/>
-        </div></div>
+      <Modal isVisible={true}>
+        <div style={{ textAlign: "center" }}>
+          <div>
+            <h2>Title</h2>
+            <Enter />
+          </div>
+          <div>
+            <h2>Image link</h2>
+            <Enter />
+          </div>
+          <div>{this.renderInstruction()}</div>
+        </div>
+      </Modal>
     );
   }
 }
 
-const mapStateToProps=state=>{
-  return{
-    newReceipeData:state.newReceipe
-  }
+const mapStateToProps = state => {
+  return {
+    newReceipeData: state.newReceipe
+  };
+};
 
-}
+const mapDispatchToProsps = dispatch => {
+  return {
+    onAddingIngredient: () =>
+      dispatch({
+        type: "newReceipeIngredient",
+        payload: null
+      }),
+    onAddingInstruction: instruction =>
+      dispatch({
+        type: "newReceipeInstruction",
+        payload: instruction
+      }),
+    onChanging: data =>
+      dispatch({
+        type: "ChangeTemp",
+        payload: data
+      })
+  };
+};
 
-
-const mapDispatchToProsps=dispatch=>{
-  return{
-    onAddingIngredient:()=>dispatch({
-      type:'newReceipeIngredient',payload:null
-    }),
-    onAddingInstruction:instruction=>dispatch({
-      type:'newReceipeInstruction',payload:instruction
-    }),
-    onChanging:(i,val)=>dispatch({
-      type:"changeIngredient",payload:{i,val}
-    })
-  }
-
-}
-
-
-export default connect(mapStateToProps,mapDispatchToProsps)(NewReceipe)
+export default connect(mapStateToProps, mapDispatchToProsps)(NewReceipe);

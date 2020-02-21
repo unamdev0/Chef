@@ -17,6 +17,7 @@ const initialState = {
     ingredientsCount: 1,
     instructionsCount:1,
     instructions: [],
+    tempInstruction:"",
     title:null,
     imageUrl:null
   }
@@ -76,13 +77,15 @@ const reducer = (state = initialState, action) => {
   } else if (action.type === "newReceipeIngredient") {
     var newReceipeData={
       ingredientsCount: state.newReceipe.ingredientsCount + 1,
-      ingredients: state.newReceipe.ingredients,
+      ingredients: state.newReceipe.ingredients.concat(state.newReceipe.tempIngredient),
       tempIngredient: null,
+      tempInstruction:state.newReceipe.tempInstruction,
       instructions:state.newReceipe.instructions,
       title:state.newReceipe.title,
       instructionsCount:state.newReceipe.instructionsCount,
       imageUrl:state.newReceipe.imageUrl
     }
+    console.log(newReceipeData)
     return {
       ...state,
      newReceipe:newReceipeData
@@ -90,26 +93,36 @@ const reducer = (state = initialState, action) => {
   }else if (action.type === "newReceipeInstruction") {
     var newReceipeData={
       instructionsCount: state.newReceipe.instructionsCount + 1,
-      instructions: state.newReceipe.ingredients.push(action.payload),
+      instructions: state.newReceipe.instructions.concat(state.newReceipe.tempInstruction),
       tempIngredient: state.newReceipe.tempIngredient,
+      tempInstruction:null,
       ingredients:state.newReceipe.ingredients,
       title:state.newReceipe.title,
-      instructionsCount:state.newReceipe.instructionsCount,
+      ingredientsCount:state.newReceipe.ingredientsCount,
       imageUrl:state.newReceipe.imageUrl
     }
     return {
       ...state,
      newReceipe:newReceipeData
     };
-  }else if (action.type === "changeIngredient") {
-    var newIngredient=state.newReceipe
-    newIngredient.ingredients[action.payload.i]=action.payload.val
-    console.log(newIngredient,action.payload)
-    return {
-      ...state,
-    newReceipe:newIngredient
-    };
+  }else if(action.type==="ChangeTemp"){
+    if(action.payload.category==="instruction"){
+      var newReceipeData=state.newReceipe
+      newReceipeData.tempInstruction=action.payload.value
+      return {
+        ...state,
+       newReceipe:newReceipeData
+      };
+    }else{
+      var newReceipeData=state.newReceipe
+      newReceipeData.tempIngredient=action.payload.value
+      return {
+        ...state,
+       newReceipe:newReceipeData
+      };
+    }
   }
+
   return state;
 };
 
