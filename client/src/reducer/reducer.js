@@ -121,6 +121,11 @@ const reducer = (state = initialState, action) => {
        newReceipe:newReceipeData
       };
     }
+  }else if(action.type==="Logout"){
+    return{
+      ...state,
+      token:null
+    }
   }
 
   return state;

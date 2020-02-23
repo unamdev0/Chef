@@ -8,8 +8,14 @@ import { connect } from "react-redux";
 class NewReceipe extends Component {
   handleSubmit = event => {
     event.preventDefault();
+    if(this.props.newReceipeData.tempIngredient!=null){
+      this.props.onChanging({ category: "ingredient", value: this.props.newReceipeData.tempIngredient })
+    }
+    if(this.props.newReceipeData.tempInstruction!=null){
+      this.props.onChanging({ category: "instruction", value: this.props.newReceipeData.tempInstruction })
+    }
     const newReceipe = this.props.newReceipeData;
-    axios.post("/newReceipe", newReceipe).then(res => {
+    axios.post("/user/newReceipe", {token:this.props.token,newReceipe}).then(res => {
       console.log(res.data);
     });
   };
@@ -109,7 +115,8 @@ class NewReceipe extends Component {
 
 const mapStateToProps = state => {
   return {
-    newReceipeData: state.newReceipe
+    newReceipeData: state.newReceipe,
+    token:state.token
   };
 };
 

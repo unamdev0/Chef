@@ -24,14 +24,7 @@ const User = new Schema(
       type: String,
       required: false
     },
-    Receipes: [
-      {
-        ReceipeId: {
-          type: Schema.Types.ObjectId,
-          ref: "Receipes"
-        }
-      }
-    ]
+    Receipes: [{ type: Schema.Types.ObjectId, ref: "Receipes" }]
   },
   {
     timestamps: {

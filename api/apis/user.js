@@ -3,6 +3,8 @@ const isEmpty = require("is-empty");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Receipes= require('../models/Receipes')
+const ObjectId = require('mongoose').Types.ObjectId
 
 function validateLoginDetails(data) {
   let errors = {};
@@ -143,7 +145,7 @@ exports.validateLogin = (req, res) => {
 
     bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch) {
-        return res.status(400).json({error:"Wrong password"});
+        return res.status(400).json({ error: "Wrong password" });
       } else {
         const payload = {
           id: user.id,
@@ -166,4 +168,44 @@ exports.validateLogin = (req, res) => {
       }
     });
   });
+};
+
+exports.newReceipe = (req, res) => {
+  const token = req.body.token;
+  const { newReceipe } = req.body;
+  if (!token) {
+    return res.send("Login first");
+  }
+  jwt.verify(token, process.env.secretOrKey, function(err, decoded) {
+    if (err) {
+      res.status(401).send("Unauthorized: Invalid token");
+    } else {
+      if (
+        isEmpty(newReceipe.title) ||
+        isEmpty(newReceipe.imageUrl) ||
+        (newReceipe.instructions === [] ) ||
+        (newReceipe.ingredients === [])
+      ) {
+        return res.status(404).json({ error: "Fields are Empty" });
+      }else{
+        const data={
+          title:newReceipe.title,
+          imageLink:newReceipe.imageUrl,
+          instructions:newReceipe.instructions,
+          ingredients:newReceipe.ingredients,
+          userId:ObjectId(decoded.id)
+        }
+        Receipes.create(data).then(res=>{
+          User.findByIdAndUpdate(decoded.id,{$push:{"Receipes": ObjectId(res._id)}}).then(()=>{
+            console.log("done")
+          })
+        })
+      res.send("Done");
+    }
+  
+  }
+  });
+
+  
+ 
 };
