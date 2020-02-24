@@ -3,8 +3,8 @@ const isEmpty = require("is-empty");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const Receipes= require('../models/Receipes')
-const ObjectId = require('mongoose').Types.ObjectId
+const Receipes = require("../models/Receipes");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 function validateLoginDetails(data) {
   let errors = {};
@@ -159,10 +159,34 @@ exports.validateLogin = (req, res) => {
             expiresIn: 31556926
           },
           (err, token) => {
-            res.json({
-              success: true,
-              token: token
+            // User.aggregate([
+            //   { $match: { _id: ObjectId(user.id) } },
+            //   {
+            //     $unwind: "$Receipes"
+            //   },
+            //   {
+            //     $lookup: {
+            //       from: "receipe",
+            //       localField: "Receipes",
+            //       foreignField: "_id.oid",
+            //       as: "receipe"
+            //     }
+            //   }
+            // ])
+            Receipes.aggregate([
+              {
+                $match:{}
+              }
+            ])
+            .then(data => {
+              res.send(data);
             });
+            // })
+            // res.json({
+            //   success: true,
+            //   token: token,
+            //   userInfo:user
+            // });
           }
         );
       }
@@ -183,29 +207,26 @@ exports.newReceipe = (req, res) => {
       if (
         isEmpty(newReceipe.title) ||
         isEmpty(newReceipe.imageUrl) ||
-        (newReceipe.instructions === [] ) ||
-        (newReceipe.ingredients === [])
+        newReceipe.instructions === [] ||
+        newReceipe.ingredients === []
       ) {
         return res.status(404).json({ error: "Fields are Empty" });
-      }else{
-        const data={
-          title:newReceipe.title,
-          imageLink:newReceipe.imageUrl,
-          instructions:newReceipe.instructions,
-          ingredients:newReceipe.ingredients,
-          userId:ObjectId(decoded.id)
-        }
-        Receipes.create(data).then(res=>{
-          User.findByIdAndUpdate(decoded.id,{$push:{"Receipes": ObjectId(res._id)}}).then(()=>{
-            console.log("done")
-          })
-        })
-      res.send("Done");
+      } else {
+        const data = {
+          title: newReceipe.title,
+          imageLink: newReceipe.imageUrl,
+          instructions: newReceipe.instructions,
+          ingredients: newReceipe.ingredients,
+          userId: ObjectId(decoded.id)
+        };
+        Receipes.create(data).then(res => {
+          User.findByIdAndUpdate(decoded.id, {
+            $push: { Receipes: ObjectId(res._id) }
+          }).then(() => {
+            res.send("Success");
+          });
+        });
+      }
     }
-  
-  }
   });
-
-  
- 
 };

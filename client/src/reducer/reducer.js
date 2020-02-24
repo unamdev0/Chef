@@ -4,6 +4,13 @@ const initialState = {
     index: -1,
     receipeData: {}
   },
+  userInfo:{
+    userName:null,
+    email:null,
+    followers:null,
+    receipes:[],
+    following:null
+  },
   ingredientsCount: 1,
   ingredients: "",
   tempIngredient: "",

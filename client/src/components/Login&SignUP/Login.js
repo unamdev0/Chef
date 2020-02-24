@@ -24,6 +24,7 @@ const validation = (e, isAuthenticated) => {
       }
     })
       .then(data => {
+        console.log(data.data)
         isAuthenticated(data.data.token);
       })
       .catch(function(error) {
