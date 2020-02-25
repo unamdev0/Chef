@@ -159,34 +159,51 @@ exports.validateLogin = (req, res) => {
             expiresIn: 31556926
           },
           (err, token) => {
-            // User.aggregate([
-            //   { $match: { _id: ObjectId(user.id) } },
-            //   {
-            //     $unwind: "$Receipes"
-            //   },
-            //   {
-            //     $lookup: {
-            //       from: "receipe",
-            //       localField: "Receipes",
-            //       foreignField: "_id.oid",
-            //       as: "receipe"
-            //     }
-            //   }
-            // ])
-            Receipes.aggregate([
+            User.aggregate([
+              { $match: { _id: ObjectId(user.id) } },
               {
-                $match:{}
+                $unwind: "$Receipes"
+              },
+              {
+                $lookup: {
+                  from: "receipes",
+                  localField: "Receipes",
+                  foreignField: "_id",
+                  as: "Receipes"
+                }
+              },
+              {
+                $unwind: "$Receipes"
+              },
+              {
+                $project: {
+                  "Receipes._id": 0,
+                  password: 0,
+                  created_at: 0,
+                  updated_at: 0,
+                  "Receipes.userId": 0,
+                  "Receipes.created_at": 0,
+                  "Receipes.updated_at": 0,
+                  "Receipes.__v": 0,
+                  __v: 0
+                }
+              },
+              {
+                $group: {
+                  _id: "_id",
+                  receipes: { $push: "$Receipes" },
+                  name: { $first: "$name" },
+                  email: { $first: "$email" },
+                  username: { $first: "$username" }
+                }
               }
-            ])
-            .then(data => {
-              res.send(data);
+            ]).then(data => {
+              res.json({
+                success: true,
+                token: token,
+                userInfo: data[0]
+              });
             });
-            // })
-            // res.json({
-            //   success: true,
-            //   token: token,
-            //   userInfo:user
-            // });
           }
         );
       }

@@ -24,8 +24,7 @@ const validation = (e, isAuthenticated) => {
       }
     })
       .then(data => {
-        console.log(data.data)
-        isAuthenticated(data.data.token);
+        isAuthenticated(data.data.token, data.data.userInfo);
       })
       .catch(function(error) {
         alert(error);

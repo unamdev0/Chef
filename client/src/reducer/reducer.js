@@ -7,9 +7,8 @@ const initialState = {
   userInfo:{
     userName:null,
     email:null,
-    followers:null,
     receipes:[],
-    following:null
+    name:null
   },
   ingredientsCount: 1,
   ingredients: "",
@@ -74,7 +73,8 @@ const reducer = (state = initialState, action) => {
   } else if (action.type === "isAuthenticated") {
     return {
       ...state,
-      token: action.payload
+      token: action.payload.token,
+      userInfo:action.payload.userInfo
     };
   } else if (action.type === "isLoading") {
     return {
@@ -131,7 +131,13 @@ const reducer = (state = initialState, action) => {
   }else if(action.type==="Logout"){
     return{
       ...state,
-      token:null
+      token:null,
+      userInfo:{
+        userName:null,
+        email:null,
+        receipes:[],
+        name:null
+      }
     }
   }
 

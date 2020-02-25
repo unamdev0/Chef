@@ -1,12 +1,21 @@
-import React from 'react'
+import React,{Component} from 'react'
+import { connect } from 'react-redux'
 
-
-const Profile=(props)=>{
+class Profile extends Component{
+    render(){
     return(
-        <div>
+        <div className="profile">
+            <h1>{this.props.userInfo.name?this.props.userInfo.name:"fdsafdas"}</h1>
             
         </div>
     )
+}}
+
+const mapStateToProps=state=>{
+    return{
+        userInfo:state.userInfo
+    }
 }
 
-export default Profile
+
+export default connect(mapStateToProps)(Profile);
