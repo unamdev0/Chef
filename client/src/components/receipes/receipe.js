@@ -13,8 +13,10 @@ const Receipe = props => {
         <div className="Ingredients">
           Ingredients:
           <ul>
-            {receipeData.usedIngredients.map(ingredient => {
+            {receipeData.usedIngredients?receipeData.usedIngredients.map(ingredient => {
               return <li>{ingredient.originalString}</li>;
+            }):receipeData.ingredients.map(ingredient=>{
+              return<li>{ingredient}</li>
             })}
           </ul>
         </div>
@@ -32,7 +34,7 @@ const Receipe = props => {
       return Arr.map(instruction => {
         return <li>{instruction}</li>;
       });
-    };
+    }
 
     let MissingIngredients = () => {
       if (receipeData.missedIngredientCount != 0) {
@@ -99,8 +101,9 @@ const Receipe = props => {
           <h3>{receipeData.title}</h3>
           <img
             className="ReceipeImage"
-            src={`${props.imageUrl + receipeData.image}`}
+            src={`${props.imageUrl + receipeData.image?receipeData.image:""}`}
           />
+          Instructions:
           <div
             dangerouslySetInnerHTML={{ __html: receipeData.instructions }}
           ></div>

@@ -4,28 +4,42 @@ const initialState = {
     index: -1,
     receipeData: {}
   },
-  userInfo:{
-    userName:null,
-    email:null,
-    receipes:[],
-    name:null
+  userInfo: {
+    name: "Udit Namdev",
+    email: "unamdev0@gmail.com",
+    username: "unamdev0",
+
+    receipes: [
+      {
+        instructions: ["dsaf", "fdsa"],
+        ingredients: ["daa", "dsf"],
+        title: "pizza",
+        imageLink: "fsdfs"
+      },
+      {
+        instructions: ["dsaf", "fdsa"],
+        ingredients: ["daa", "dsf"],
+        title: "pizza",
+        imageLink: "sa"
+      }
+    ]
   },
   ingredientsCount: 1,
   ingredients: "",
   tempIngredient: "",
   ingredientSearch: null,
-  receipeSearch:null,
+  receipeSearch: null,
   loading: false,
   token: null,
   newReceipe: {
     ingredients: [],
     tempIngredient: "",
     ingredientsCount: 1,
-    instructionsCount:1,
+    instructionsCount: 1,
     instructions: [],
-    tempInstruction:"",
-    title:null,
-    imageUrl:null
+    tempInstruction: "",
+    title: null,
+    imageUrl: null
   }
 };
 
@@ -74,7 +88,7 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       token: action.payload.token,
-      userInfo:action.payload.userInfo
+      userInfo: action.payload.userInfo
     };
   } else if (action.type === "isLoading") {
     return {
@@ -82,63 +96,67 @@ const reducer = (state = initialState, action) => {
       loading: action.payload
     };
   } else if (action.type === "newReceipeIngredient") {
-    var newReceipeData={
+    var newReceipeData = {
       ingredientsCount: state.newReceipe.ingredientsCount + 1,
-      ingredients: state.newReceipe.ingredients.concat(state.newReceipe.tempIngredient),
+      ingredients: state.newReceipe.ingredients.concat(
+        state.newReceipe.tempIngredient
+      ),
       tempIngredient: null,
-      tempInstruction:state.newReceipe.tempInstruction,
-      instructions:state.newReceipe.instructions,
-      title:state.newReceipe.title,
-      instructionsCount:state.newReceipe.instructionsCount,
-      imageUrl:state.newReceipe.imageUrl
-    }
-    console.log(newReceipeData)
+      tempInstruction: state.newReceipe.tempInstruction,
+      instructions: state.newReceipe.instructions,
+      title: state.newReceipe.title,
+      instructionsCount: state.newReceipe.instructionsCount,
+      imageUrl: state.newReceipe.imageUrl
+    };
+    console.log(newReceipeData);
     return {
       ...state,
-     newReceipe:newReceipeData
+      newReceipe: newReceipeData
     };
-  }else if (action.type === "newReceipeInstruction") {
-    var newReceipeData={
+  } else if (action.type === "newReceipeInstruction") {
+    var newReceipeData = {
       instructionsCount: state.newReceipe.instructionsCount + 1,
-      instructions: state.newReceipe.instructions.concat(state.newReceipe.tempInstruction),
+      instructions: state.newReceipe.instructions.concat(
+        state.newReceipe.tempInstruction
+      ),
       tempIngredient: state.newReceipe.tempIngredient,
-      tempInstruction:null,
-      ingredients:state.newReceipe.ingredients,
-      title:state.newReceipe.title,
-      ingredientsCount:state.newReceipe.ingredientsCount,
-      imageUrl:state.newReceipe.imageUrl
-    }
+      tempInstruction: null,
+      ingredients: state.newReceipe.ingredients,
+      title: state.newReceipe.title,
+      ingredientsCount: state.newReceipe.ingredientsCount,
+      imageUrl: state.newReceipe.imageUrl
+    };
     return {
       ...state,
-     newReceipe:newReceipeData
+      newReceipe: newReceipeData
     };
-  }else if(action.type==="ChangeTemp"){
-    if(action.payload.category==="instruction"){
-      var newReceipeData=state.newReceipe
-      newReceipeData.tempInstruction=action.payload.value
+  } else if (action.type === "ChangeTemp") {
+    if (action.payload.category === "instruction") {
+      var newReceipeData = state.newReceipe;
+      newReceipeData.tempInstruction = action.payload.value;
       return {
         ...state,
-       newReceipe:newReceipeData
+        newReceipe: newReceipeData
       };
-    }else{
-      var newReceipeData=state.newReceipe
-      newReceipeData.tempIngredient=action.payload.value
+    } else {
+      var newReceipeData = state.newReceipe;
+      newReceipeData.tempIngredient = action.payload.value;
       return {
         ...state,
-       newReceipe:newReceipeData
+        newReceipe: newReceipeData
       };
     }
-  }else if(action.type==="Logout"){
-    return{
+  } else if (action.type === "Logout") {
+    return {
       ...state,
-      token:null,
-      userInfo:{
-        userName:null,
-        email:null,
-        receipes:[],
-        name:null
+      token: null,
+      userInfo: {
+        userName: null,
+        email: null,
+        receipes: [],
+        name: null
       }
-    }
+    };
   }
 
   return state;

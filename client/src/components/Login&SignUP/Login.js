@@ -66,8 +66,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    isAuthenticated: token =>
-      dispatch({ type: "isAuthenticated", payload: token })
+    isAuthenticated: (token,userInfo) =>
+      dispatch({ type: "isAuthenticated", payload: {token,userInfo} })
   };
 };
 
