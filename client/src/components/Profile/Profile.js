@@ -16,7 +16,9 @@ class Profile extends Component{
         }
     }
     render(){
-        console.log(this.props.userInfo)
+        if(this.props.userInfo.username===null){
+            this.props.history.push('/login');
+        }
     return(
         <Modal isVisible={true}>
         <div className="profile">

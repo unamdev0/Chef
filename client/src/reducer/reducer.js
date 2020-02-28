@@ -5,23 +5,12 @@ const initialState = {
     receipeData: {}
   },
   userInfo: {
-    name: "Udit Namdev",
-    email: "unamdev0@gmail.com",
-    username: "unamdev0",
+    name:null,
+    email:null,
+    username: null,
 
     receipes: [
-      {
-        instructions: ["dsaf", "fdsa"],
-        ingredients: ["daa", "dsf"],
-        title: "pizza",
-        imageLink: "fsdfs"
-      },
-      {
-        instructions: ["dsaf", "fdsa"],
-        ingredients: ["daa", "dsf"],
-        title: "pizza",
-        imageLink: "sa"
-      }
+  
     ]
   },
   ingredientsCount: 1,
