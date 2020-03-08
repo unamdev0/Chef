@@ -5,13 +5,10 @@ const initialState = {
     receipeData: {}
   },
   userInfo: {
-    name:null,
-    email:null,
+    name: null,
+    email: null,
     username: null,
-
-    receipes: [
-  
-    ]
+    receipes: []
   },
   ingredientsCount: 1,
   ingredients: "",

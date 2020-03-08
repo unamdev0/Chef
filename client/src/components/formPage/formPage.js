@@ -6,6 +6,7 @@ import axios from "axios";
 import Loader from '../../UI/Loader/Loader'
 import Backdrop from '../../UI/Backdrop/Backdrop'
 import { connect } from "react-redux";
+import Navs from '../NavBar/Navbar'
 
 class FormPage extends Component {
   handleSubmit = (event,type) => {
@@ -58,6 +59,7 @@ class FormPage extends Component {
         );
       }
       return (
+
         <form onSubmit={(e)=>{this.handleSubmit(e,"ingredients")}}>
           {enter}
           <input style={{width:"15%",display:"inline"}} className="submitButton" type="submit" />
@@ -76,6 +78,7 @@ class FormPage extends Component {
   render() {
     return (
       <div>
+        <Navs/>
         {this.props.loading ? <div><Backdrop isVisible={true}/><Loader/></div> : ""}
       <div className="main">
         <h2>What ingredients do you have?</h2>

@@ -7,7 +7,7 @@ import Axios from "axios";
 import qs from "qs";
 import { connect } from "react-redux";
 
-const validation = (e, isAuthenticated) => {
+const validation = (e, isAuthenticated,props) => {
   e.preventDefault();
   const password = document.forms["login"]["password"].value;
   const username = document.forms["login"]["username"].value;
@@ -24,11 +24,11 @@ const validation = (e, isAuthenticated) => {
       }
     })
       .then(data => {
+        props.history.push("/")
         isAuthenticated(data.data.token, data.data.userInfo);
       })
       .catch(function(error) {
         alert(error);
-        console.log("wewrw", error);
       });
   } catch (e) {
     console.log("dasf", e);
@@ -43,7 +43,7 @@ const Login = props => {
         <form
           name="login"
           onSubmit={e => {
-            validation(e, props.isAuthenticated);
+            validation(e, props.isAuthenticated,props);
           }}
         >
           <div className="login">
@@ -66,8 +66,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    isAuthenticated: (token,userInfo) =>
-      dispatch({ type: "isAuthenticated", payload: {token,userInfo} })
+    isAuthenticated: (token, userInfo) =>
+      dispatch({ type: "isAuthenticated", payload: { token, userInfo } })
   };
 };
 
