@@ -17,7 +17,6 @@ class Navs extends Component {
             </a>
           </span>
           <span>
-            {" "}
             <a href="/signup">
               Signup <InputIcon />
             </a>

@@ -36,6 +36,11 @@ const validation = (e, isAuthenticated,props) => {
 };
 
 const Login = props => {
+  if(props.token!=null){
+    return(
+    props.history.push('/')
+    )
+  }
   return (
     <div>
       <Backdrop isVisible={true} />
